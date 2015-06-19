@@ -43,42 +43,84 @@ angular.module('componentController')
           }
       }
       
-      $scope.findValue = function(enteredValue){
+      $scope.findValue = function(){
           $scope.results = [];
-          if(enteredValue != null){
-              
-              if(enteredValue.length > 2){
-                  $scope.mydata = myData;
-                  var total = 0;
-                  for(var i=0; i<$scope.mydata.length;i++){
-                      if($scope.mydata[i].name.match(enteredValue)){
-                          //$scope.results.push($scope.mydata[i]);
-                          total = total+1;
-                      }
-                  }
-                  if(total>=1){
+          
+          var separate;
+          
+          if($scope.enteredValue.match("|")){
+              var res = $scope.enteredValue.split("|");
+              if($scope.enteredValue != null){
+
+                      if($scope.enteredValue.length > 2){
+                          $scope.mydata = myData;
+                          var total = 0;
                           for(var i=0; i<$scope.mydata.length;i++){
-                          if($scope.mydata[i].name.match(enteredValue)){
-                              $scope.results.push($scope.mydata[i]);
+                              if($scope.mydata[i].name.match(res[0]) && $scope.mydata[i].network_address.match(res[1])){
+                                  //$scope.results.push($scope.mydata[i]);
+                                  total = total+1;
+                              }
                           }
+                          if(total>=1){
+                                  for(var i=0; i<$scope.mydata.length;i++){
+                                  if($scope.mydata[i].name.match(res[0]) && $scope.mydata[i].network_address.match(res[1])){
+                                      $scope.results.push($scope.mydata[i]);
+                                  }
+                              }
+                              $scope.found = true;
+                              $scope.message = "";
+                          }else{
+                              $scope.found = false;
+                              $scope.message = "Not Found";
+                          }
+
+                      }else{
+                          $scope.found = false;
+                          $scope.message = "Minimum 3 digit";
                       }
-                      $scope.found = true;
-                      $scope.message = "";
                   }else{
-                      $scope.found = false;
-                      $scope.message = "Not Found";
+                    $scope.found = false;
+                     // $scope.message = "Search Box is empty";
                   }
-                  
-              }else{
-                  $scope.found = false;
-                  $scope.message = "Minimum 3 digit";
-              }
           }else{
-            $scope.found = false;
-             // $scope.message = "Search Box is empty";
+                      if($scope.enteredValue != null){
+
+                      if($scope.enteredValue.length > 2){
+                          $scope.mydata = myData;
+                          var total = 0;
+                          for(var i=0; i<$scope.mydata.length;i++){
+                              if($scope.mydata[i].name.match($scope.enteredValue)){
+                                  //$scope.results.push($scope.mydata[i]);
+                                  total = total+1;
+                              }
+                          }
+                          if(total>=1){
+                                  for(var i=0; i<$scope.mydata.length;i++){
+                                  if($scope.mydata[i].name.match($scope.enteredValue)){
+                                      $scope.results.push($scope.mydata[i]);
+                                  }
+                              }
+                              $scope.found = true;
+                              $scope.message = "";
+                          }else{
+                              $scope.found = false;
+                              $scope.message = "Not Found";
+                          }
+
+                      }else{
+                          $scope.found = false;
+                          $scope.message = "Minimum 3 digit";
+                      }
+                  }else{
+                    $scope.found = false;
+                     // $scope.message = "Search Box is empty";
+                  }
           }
+          
+          
+          
           results = $scope.results;
-          console.log(results.length);
+          console.log(results);
       }
        
       function del(key){
