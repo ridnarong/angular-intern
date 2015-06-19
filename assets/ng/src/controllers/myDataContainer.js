@@ -43,68 +43,181 @@ angular.module('componentController')
           }
       }
       
+      function isNumeric(n) {
+  if(!isNaN(n))
+    {
+     return true
+    }
+  else
+   {
+    return false
+   }
+}
+      
+      
       $scope.findValue = function(){
+          try {
           $scope.results = [];
           
-          var separate;
-          
-          if($scope.enteredValue.match("|")){
-              var res = $scope.enteredValue.split("|");
+         // var separate;
+          var res = $scope.enteredValue.split("/");
+              
+          if(res.length == 2){
+              
               if($scope.enteredValue != null){
 
                       if($scope.enteredValue.length > 2){
-                          $scope.mydata = myData;
-                          var total = 0;
-                          for(var i=0; i<$scope.mydata.length;i++){
-                              if($scope.mydata[i].name.match(res[0]) && $scope.mydata[i].network_address.match(res[1])){
-                                  //$scope.results.push($scope.mydata[i]);
-                                  total = total+1;
-                              }
-                          }
-                          if(total>=1){
-                                  for(var i=0; i<$scope.mydata.length;i++){
-                                  if($scope.mydata[i].name.match(res[0]) && $scope.mydata[i].network_address.match(res[1])){
-                                      $scope.results.push($scope.mydata[i]);
-                                  }
-                              }
-                              $scope.found = true;
-                              $scope.message = "";
+                          
+                          if(isNumeric(res[0]) == true){
+                          
+                                    $scope.mydata = myData;
+                                      var total = 0;
+                                      for(var i=0; i<$scope.mydata.length;i++){
+                                          var check = false;
+                                          if($scope.mydata[i].name.match(res[0])){
+                                              for(var j=0; j<$scope.mydata[i].sensors.length;j++){
+                                                  if($scope.mydata[i].sensors[j].name.match(res[1])){
+                                                      check = true;
+                                                  }
+                                              }
+                                          }
+                                          if(check == true){
+                                                 total = total+1;
+                                              }
+                                      }
+                                      if(total>=1){
+                                              for(var i=0; i<$scope.mydata.length;i++){
+                                                  var ine = 0;
+                                                  var check = false;
+                                              if($scope.mydata[i].name.match(res[0])){
+                                                  
+                                                  for(var j=0; j<$scope.mydata[i].sensors.length;j++){
+                                                      if($scope.mydata[i].sensors[j].name.match(res[1])){
+                                                          ine = i;
+                                                          check = true;
+                                                      }
+                                                  }
+                                              }
+                                                  if(check == true){
+                                                    $scope.results.push($scope.mydata[ine]);
+                                                }
+                                          }
+                                          $scope.found = true;
+                                          $scope.message = "";
+                                      }else{
+                                          $scope.found = false;
+                                          $scope.message = "Not Found3";
+                                      }
                           }else{
-                              $scope.found = false;
-                              $scope.message = "Not Found";
+                              
+                              $scope.mydata = myData;
+                                      var total = 0;
+                                      for(var i=0; i<$scope.mydata.length;i++){
+                                          var check = false;
+                                          for(var j=0; j<$scope.mydata[i].sensors.length;j++){
+                                              if($scope.mydata[i].sensors[j].name.match(res[0])){
+                                                  if($scope.mydata[i].name.match(res[1])){
+                                                    check = true;
+                                                  }
+                                              }
+                                          }
+                                          if(check == true){
+                                             total = total+1;
+                                          }
+                                      }
+                                      if(total>=1){
+                                              for(var i=0; i<$scope.mydata.length;i++){
+                                                  var ine = 0;
+                                                  var check = false;
+                                                    for(var j=0; j<$scope.mydata[i].sensors.length;j++){
+                                                      if($scope.mydata[i].sensors[j].name.match(res[0])){
+                                                          if($scope.mydata[i].name.match(res[1])){
+                                                          ine = i;
+                                                          check = true;
+                                                      }
+                                                  }
+                                              }
+                                                  if(check == true){
+                                                    $scope.results.push($scope.mydata[ine]);
+                                                }
+                                          }
+                                          $scope.found = true;
+                                          $scope.message = "";
+                                      }else{
+                                          $scope.found = false;
+                                          $scope.message = "Not Found19";
+                                      }
+                              
                           }
-
-                      }else{
-                          $scope.found = false;
-                          $scope.message = "Minimum 3 digit";
-                      }
+                              }else{
+                                  $scope.found = false;
+                                  $scope.message = "Minimum 3 digit";
+                              }
                   }else{
                     $scope.found = false;
-                     // $scope.message = "Search Box is empty";
                   }
           }else{
                       if($scope.enteredValue != null){
 
                       if($scope.enteredValue.length > 2){
-                          $scope.mydata = myData;
-                          var total = 0;
-                          for(var i=0; i<$scope.mydata.length;i++){
-                              if($scope.mydata[i].name.match($scope.enteredValue)){
-                                  //$scope.results.push($scope.mydata[i]);
-                                  total = total+1;
-                              }
-                          }
-                          if(total>=1){
-                                  for(var i=0; i<$scope.mydata.length;i++){
-                                  if($scope.mydata[i].name.match($scope.enteredValue)){
-                                      $scope.results.push($scope.mydata[i]);
+                          if(isNumeric($scope.enteredValue) == false){
+                              $scope.mydata = myData;
+                                var total = 0;
+                              for(var i=0; i<$scope.mydata.length;i++){
+                                  var check = false;
+                                  for(var j=0; j<$scope.mydata[i].sensors.length;j++){
+                                      if($scope.mydata[i].sensors[j].name.match($scope.enteredValue)){
+                                          check = true;
+                                      }
+                                  }
+                                  if(check == true){
+                                     total = total+1;
                                   }
                               }
-                              $scope.found = true;
-                              $scope.message = "";
+                              console.log(total);
+                              if(total>=1){
+                                      for(var i=0; i<$scope.mydata.length;i++){
+                                          var ine = 0;
+                                          var check = false;
+                                          for(var j=0; j<$scope.mydata[i].sensors.length;j++){
+                                              if($scope.mydata[i].sensors[j].name.match($scope.enteredValue)){
+                                                  ine = i;
+                                                  check = true;
+                                              }
+                                          }
+                                          if(check == true){
+                                             $scope.results.push($scope.mydata[ine]);
+                                          }
+                                          
+                                      }
+                                  $scope.found = true;
+                                  $scope.message = "";
+                              }else{
+                                  $scope.found = false;
+                                  $scope.message = "Not Found1";
+                              }
                           }else{
-                              $scope.found = false;
-                              $scope.message = "Not Found";
+                              $scope.mydata = myData;
+                          var total = 0;
+                              for(var i=0; i<$scope.mydata.length;i++){
+                                  if($scope.mydata[i].name.match($scope.enteredValue)){
+                                      //$scope.results.push($scope.mydata[i]);
+                                      total = total+1;
+                                  }
+                              }
+                              if(total>=1){
+                                      for(var i=0; i<$scope.mydata.length;i++){
+                                      if($scope.mydata[i].name.match($scope.enteredValue)){
+                                          $scope.results.push($scope.mydata[i]);
+                                          //console.log($scope.mydata[i].sensors[1].name);
+                                      }
+                                  }
+                                  $scope.found = true;
+                                  $scope.message = "";
+                              }else{
+                                  $scope.found = false;
+                                  $scope.message = "Not Found2";
+                              }
                           }
 
                       }else{
@@ -121,6 +234,10 @@ angular.module('componentController')
           
           results = $scope.results;
           console.log(results);
+}catch(err) {
+    console.log(err.message);
+}
+        //  console.log($scope.mydata[6].sensors.length);
       }
        
       function del(key){

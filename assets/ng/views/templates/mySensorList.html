@@ -22,9 +22,14 @@
 	{{message}}
 </div>
     <md-list>
-        <md-list-item ng-repeat="(i,it) in results">
-        <md-button ng-click="move($index,'left')"><<</md-button>{{it.name}}<md-button ng-click="move($index,'right')">>></md-button>
-        	
+        <md-list-item ng-repeat="it in results" layout="column">  
+            <div style="background:black;width:100%;height:2px"></div>
+            <div style="background:gray;width:100%"><md-button ng-click="move($index,'left')"><<</md-button>{{it.name}}<md-button ng-click="move($index,'right')">>></md-button></div>
+            <div style="background:black;width:100%;height:2px"></div>
+            <div ng-repeat="subItem in it.sensors">
+            <span>{{subItem.name}}</span>
+            </div>
+            <span>&nbsp;</span>
         </md-list-item>
         
     	
