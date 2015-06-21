@@ -5,16 +5,16 @@ var rightData = [];
 var myData = [];
 var results = [];
 angular.module('componentController')
-  .controller("myDataContainer", ['$scope', 'Device','$mdSidenav', function($scope, Device,$mdSidenav) {
+  .controller("myDataContainer", ['Device','$mdSidenav', function(Device,$mdSidenav) {
     var _this = this;
 
-      $scope.found = true;
-      $scope.leftData  = [];
-      $scope.rightData = [];
-      $scope.mydata = [];
+      _this.found = true;
+      _this.leftData  = [];
+      _this.rightData = [];
+      _this.mydata = [];
         
       
-      $scope.toggleList   = toggleUsersList;
+      _this.toggleList   = toggleUsersList;
       
       function toggleUsersList() {
             $mdSidenav('right').toggle();
@@ -25,21 +25,21 @@ angular.module('componentController')
           
           myData.$promise.then(function(data) {
               for(var i=0; i<data.length;i++){
-                  $scope.mydata.push(data[i]);
+                  _this.mydata.push(data[i]);
               }
           });
-          $scope.leftData = leftData;
-        $scope.rightData = rightData;
+          _this.leftData = leftData;
+        _this.rightData = rightData;
         }
       
       
-      $scope.prosearch = function(chek){
-          $scope.search = chek;
+      _this.prosearch = function(chek){
+          _this.search = chek;
           if(chek == false){
-            $scope.found = false;
-              $scope.message = "";
-              $scope.results = [];
-              $scope.enteredValue = "";
+            _this.found = false;
+              _this.message = "";
+              _this.results = [];
+              _this.enteredValue = "";
           }
       }
       
@@ -55,28 +55,28 @@ angular.module('componentController')
 }
       
       
-      $scope.findValue = function(){
+      _this.findValue = function(){
           try {
-          $scope.results = [];
+          _this.results = [];
           
          // var separate;
-          var res = $scope.enteredValue.split("/");
+          var res = _this.enteredValue.split("/");
               
           if(res.length == 2){
               
-              if($scope.enteredValue != null){
+              if(_this.enteredValue != null){
 
-                      if($scope.enteredValue.length > 2){
+                      if(_this.enteredValue.length > 2){
                           
                           if(isNumeric(res[0]) == true){
                           
-                                    $scope.mydata = myData;
+                                    _this.mydata = myData;
                                       var total = 0;
-                                      for(var i=0; i<$scope.mydata.length;i++){
+                                      for(var i=0; i<_this.mydata.length;i++){
                                           var check = false;
-                                          if($scope.mydata[i].name.match(res[0])){
-                                              for(var j=0; j<$scope.mydata[i].sensors.length;j++){
-                                                  if($scope.mydata[i].sensors[j].name.match(res[1])){
+                                          if(_this.mydata[i].name.match(res[0])){
+                                              for(var j=0; j<_this.mydata[i].sensors.length;j++){
+                                                  if(_this.mydata[i].sensors[j].name.match(res[1])){
                                                       check = true;
                                                   }
                                               }
@@ -86,37 +86,37 @@ angular.module('componentController')
                                               }
                                       }
                                       if(total>=1){
-                                              for(var i=0; i<$scope.mydata.length;i++){
+                                              for(var i=0; i<_this.mydata.length;i++){
                                                   var ine = 0;
                                                   var check = false;
-                                              if($scope.mydata[i].name.match(res[0])){
+                                              if(_this.mydata[i].name.match(res[0])){
                                                   
-                                                  for(var j=0; j<$scope.mydata[i].sensors.length;j++){
-                                                      if($scope.mydata[i].sensors[j].name.match(res[1])){
+                                                  for(var j=0; j<_this.mydata[i].sensors.length;j++){
+                                                      if(_this.mydata[i].sensors[j].name.match(res[1])){
                                                           ine = i;
                                                           check = true;
                                                       }
                                                   }
                                               }
                                                   if(check == true){
-                                                    $scope.results.push($scope.mydata[ine]);
+                                                    _this.results.push(_this.mydata[ine]);
                                                 }
                                           }
-                                          $scope.found = true;
-                                          $scope.message = "";
+                                          _this.found = true;
+                                          _this.message = "";
                                       }else{
-                                          $scope.found = false;
-                                          $scope.message = "Not Found3";
+                                          _this.found = false;
+                                          _this.message = "Not Found3";
                                       }
                           }else{
                               
-                              $scope.mydata = myData;
+                              _this.mydata = myData;
                                       var total = 0;
-                                      for(var i=0; i<$scope.mydata.length;i++){
+                                      for(var i=0; i<_this.mydata.length;i++){
                                           var check = false;
-                                          for(var j=0; j<$scope.mydata[i].sensors.length;j++){
-                                              if($scope.mydata[i].sensors[j].name.match(res[0])){
-                                                  if($scope.mydata[i].name.match(res[1])){
+                                          for(var j=0; j<_this.mydata[i].sensors.length;j++){
+                                              if(_this.mydata[i].sensors[j].name.match(res[0])){
+                                                  if(_this.mydata[i].name.match(res[1])){
                                                     check = true;
                                                   }
                                               }
@@ -126,47 +126,47 @@ angular.module('componentController')
                                           }
                                       }
                                       if(total>=1){
-                                              for(var i=0; i<$scope.mydata.length;i++){
+                                              for(var i=0; i<_this.mydata.length;i++){
                                                   var ine = 0;
                                                   var check = false;
-                                                    for(var j=0; j<$scope.mydata[i].sensors.length;j++){
-                                                      if($scope.mydata[i].sensors[j].name.match(res[0])){
-                                                          if($scope.mydata[i].name.match(res[1])){
+                                                    for(var j=0; j<_this.mydata[i].sensors.length;j++){
+                                                      if(_this.mydata[i].sensors[j].name.match(res[0])){
+                                                          if(_this.mydata[i].name.match(res[1])){
                                                           ine = i;
                                                           check = true;
                                                       }
                                                   }
                                               }
                                                   if(check == true){
-                                                    $scope.results.push($scope.mydata[ine]);
+                                                    _this.results.push(_this.mydata[ine]);
                                                 }
                                           }
-                                          $scope.found = true;
-                                          $scope.message = "";
+                                          _this.found = true;
+                                          _this.message = "";
                                       }else{
-                                          $scope.found = false;
-                                          $scope.message = "Not Found19";
+                                          _this.found = false;
+                                          _this.message = "Not Found19";
                                       }
                               
                           }
                               }else{
-                                  $scope.found = false;
-                                  $scope.message = "Minimum 3 digit";
+                                  _this.found = false;
+                                  _this.message = "Minimum 3 digit";
                               }
                   }else{
-                    $scope.found = false;
+                    _this.found = false;
                   }
           }else{
-                      if($scope.enteredValue != null){
+                      if(_this.enteredValue != null){
 
-                      if($scope.enteredValue.length > 2){
-                          if(isNumeric($scope.enteredValue) == false){
-                              $scope.mydata = myData;
+                      if(_this.enteredValue.length > 2){
+                          if(isNumeric(_this.enteredValue) == false){
+                              _this.mydata = myData;
                                 var total = 0;
-                              for(var i=0; i<$scope.mydata.length;i++){
+                              for(var i=0; i<_this.mydata.length;i++){
                                   var check = false;
-                                  for(var j=0; j<$scope.mydata[i].sensors.length;j++){
-                                      if($scope.mydata[i].sensors[j].name.match($scope.enteredValue)){
+                                  for(var j=0; j<_this.mydata[i].sensors.length;j++){
+                                      if(_this.mydata[i].sensors[j].name.match(_this.enteredValue)){
                                           check = true;
                                       }
                                   }
@@ -176,68 +176,68 @@ angular.module('componentController')
                               }
                               console.log(total);
                               if(total>=1){
-                                      for(var i=0; i<$scope.mydata.length;i++){
+                                      for(var i=0; i<_this.mydata.length;i++){
                                           var ine = 0;
                                           var check = false;
-                                          for(var j=0; j<$scope.mydata[i].sensors.length;j++){
-                                              if($scope.mydata[i].sensors[j].name.match($scope.enteredValue)){
+                                          for(var j=0; j<_this.mydata[i].sensors.length;j++){
+                                              if(_this.mydata[i].sensors[j].name.match(_this.enteredValue)){
                                                   ine = i;
                                                   check = true;
                                               }
                                           }
                                           if(check == true){
-                                             $scope.results.push($scope.mydata[ine]);
+                                             _this.results.push(_this.mydata[ine]);
                                           }
                                           
                                       }
-                                  $scope.found = true;
-                                  $scope.message = "";
+                                  _this.found = true;
+                                  _this.message = "";
                               }else{
-                                  $scope.found = false;
-                                  $scope.message = "Not Found1";
+                                  _this.found = false;
+                                  _this.message = "Not Found1";
                               }
                           }else{
-                              $scope.mydata = myData;
+                              _this.mydata = myData;
                           var total = 0;
-                              for(var i=0; i<$scope.mydata.length;i++){
-                                  if($scope.mydata[i].name.match($scope.enteredValue)){
-                                      //$scope.results.push($scope.mydata[i]);
+                              for(var i=0; i<_this.mydata.length;i++){
+                                  if(_this.mydata[i].name.match(_this.enteredValue)){
+                                      //_this.results.push(_this.mydata[i]);
                                       total = total+1;
                                   }
                               }
                               if(total>=1){
-                                      for(var i=0; i<$scope.mydata.length;i++){
-                                      if($scope.mydata[i].name.match($scope.enteredValue)){
-                                          $scope.results.push($scope.mydata[i]);
-                                          //console.log($scope.mydata[i].sensors[1].name);
+                                      for(var i=0; i<_this.mydata.length;i++){
+                                      if(_this.mydata[i].name.match(_this.enteredValue)){
+                                          _this.results.push(_this.mydata[i]);
+                                          //console.log(_this.mydata[i].sensors[1].name);
                                       }
                                   }
-                                  $scope.found = true;
-                                  $scope.message = "";
+                                  _this.found = true;
+                                  _this.message = "";
                               }else{
-                                  $scope.found = false;
-                                  $scope.message = "Not Found2";
+                                  _this.found = false;
+                                  _this.message = "Not Found2";
                               }
                           }
 
                       }else{
-                          $scope.found = false;
-                          $scope.message = "Minimum 3 digit";
+                          _this.found = false;
+                          _this.message = "Minimum 3 digit";
                       }
                   }else{
-                    $scope.found = false;
-                     // $scope.message = "Search Box is empty";
+                    _this.found = false;
+                     // _this.message = "Search Box is empty";
                   }
           }
           
           
           
-          results = $scope.results;
+          results = _this.results;
           console.log(results);
 }catch(err) {
     console.log(err.message);
 }
-        //  console.log($scope.mydata[6].sensors.length);
+        //  console.log(_this.mydata[6].sensors.length);
       }
        
       function del(key){
@@ -251,34 +251,34 @@ angular.module('componentController')
           myData = temp;
       }
       
-      $scope.move = function(index, position){
+      _this.move = function(index, position){
           var key = "";
           if(position == "left"){
-            $scope.leftData.push($scope.results[index]);
-              key = $scope.results[index].name;
+            _this.leftData.push(_this.results[index]);
+              key = _this.results[index].name;
           }else{
-            $scope.rightData.push($scope.results[index]);
-              key = $scope.results[index].name;
+            _this.rightData.push(_this.results[index]);
+              key = _this.results[index].name;
           }
           del(key);
-          $scope.results.splice(index,1);
+          _this.results.splice(index,1);
           
-          $scope.enteredValue = "";
-          $scope.findValue(null);
-          $scope.prosearch(false);
+          _this.enteredValue = "";
+          _this.findValue(null);
+          _this.prosearch(false);
      }
       
       
-    $scope.deleteData = function(index, position){
+    _this.deleteData = function(index, position){
         if(position == "left"){
-            myData.push($scope.leftData[index]);
-            results.push($scope.leftData[index]);
-            $scope.leftData.splice(index,1);
+            myData.push(_this.leftData[index]);
+            results.push(_this.leftData[index]);
+            _this.leftData.splice(index,1);
             
         }else{
-            myData.push($scope.rightData[index]);
-            results.push($scope.rightData[index]);
-            $scope.rightData.splice(index,1);
+            myData.push(_this.rightData[index]);
+            results.push(_this.rightData[index]);
+            _this.rightData.splice(index,1);
         }
      }
           loadDevice();

@@ -6,6 +6,7 @@ angular.module('myDirectives')
       return {
         restrict: 'E',
         controller: 'myDataContainer',
+        controllerAs: "data",
         scope: {
         },
         link: function(scope, element, attrs) {
