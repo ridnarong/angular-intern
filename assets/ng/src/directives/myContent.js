@@ -10,7 +10,7 @@ angular.module('myDirectives')
         scope: {
         },
         link: function(scope, element, attrs) {
-
+            //scope.$apply();
         },
           templateUrl: "assets/ng/views/templates/myContent.html"
       };

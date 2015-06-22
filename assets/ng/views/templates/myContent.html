@@ -6,24 +6,30 @@
       </md-button>
       <h1>Sensor</h1>
     </md-toolbar>
-
-    <md-content flex id="content" layout="row" layout-margin layout-align="center">
+ <!--<input type="button" value="load" ng-click="data.load()" style="float:left;">-->
+    <md-content flex id="content" layout="row" layout-margin layout-align="center" ng-init="data.loadDevice()">
     
         <div flex="30" flex-order="2" style="background:#009688" class="md-whiteframe-z3">
-   <md-list>
-        <md-list-item offset="33" layout-align="center" ng-repeat="(i, itr) in data.rightData">
-        {{itr.name}}<md-button ng-click="data.deleteData(i,'right')">X</md-button>	
-        </md-list-item>
-    	
-    </md-list>
-  </div>
+        <div offset="10" layout-align="center" ng-repeat="(i,result1) in data.myData">
+            <div ng-repeat="(it, resultr) in result1.sensors" style="width:100%;float:none;" ng-show="resultr.position == 'right'">
+            <div style="width:70%;float:left;">{{resultr.name}}</div>
+                <div style="width:30%;float:left;" ng-click="data.deleteData(i,it)">close</div>
+            </div>
+        </div>
+        </div>
   <div flex="30" flex-order="1" style="background:#3949ab" class="md-whiteframe-z3">
-    <md-list >
-        <md-list-item offset="33" layout-align="center" ng-repeat="(i, itl) in data.leftData">
-        {{itl.name}}<md-button ng-click="data.deleteData(i,'left')">X</md-button>	
+      <div offset="10" layout-align="center" ng-repeat="(i,result1) in data.myData">
+            <div ng-repeat="(it, resultr) in result1.sensors" style="width:100%;float:none;" ng-show="resultr.position == 'left'">
+            <div style="width:70%;float:left;">{{resultr.name}}</div>
+                <div style="width:30%;float:left;" ng-click="data.deleteData(i,it)">close</div>
+            </div>
+        </div>
+   <!-- <md-list >
+        <md-list-item offset="33" layout-align="center" ng-repeat="(i, resultl) in data.myData.sensors" ng-show="resultl.position == 'left'">
+        {{resultl.name}}<md-button ng-click="data.deleteData(i,'left')">X</md-button>	
         </md-list-item>
     	
-    </md-list>
+    </md-list>-->
   </div>
       </md-content>
 
