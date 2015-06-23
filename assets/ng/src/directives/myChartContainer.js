@@ -6,14 +6,14 @@ angular.module('myDirectives')
       return {
         restrict: 'E',
         controller: "myChartContainer",
-        controllerAs: "chart",
+        controllerAs: "container",
         scope: {
 
         },
         link: function(scope, element, attrs) {
 
         },
-        templateUrl: "/ng/views/templates/myChartContainer.html"
+        templateUrl: "/assets/ng/views/templates/myChartContainer.html"
       };
     }]);
 })();
