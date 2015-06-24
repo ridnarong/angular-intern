@@ -15,13 +15,26 @@ angular.module('componentController')
       
       
       
-      _this.loadDevice = function() { 
+      /*_this.loadDevice = function() { 
         _this.myData = [];    
           myData = Device.query();
            myData.$promise.then(function(data) {
               for(var i=0; i<data.length;i++){
                   for(var j=0; j<data[i].sensors.length;j++){
                     data[i].sensors[j].position = 'null';
+                  }
+                  _this.myData.push(data[i]);
+              }
+          });
+        }*/
+      
+      _this.loadDevice = function() { 
+        _this.myData = [];    
+          myData = Device.query();
+           myData.$promise.then(function(data) {
+              for(var i=0; i<data.length;i++){
+                  for(var j=0; j<data[i].sensors.length;j++){
+                    data[i].sensors[j].position = null;
                   }
                   _this.myData.push(data[i]);
               }
@@ -39,87 +52,90 @@ angular.module('componentController')
    }
           }
       
-      _this.findValue = function(){
-try {
-    _this.myData = myData;
-          var blas = _this.enteredValue;
-          var res = blas.split("/");
-          if(res.length == 2){
-            if(isNumeric(res[0]) == true){
-                for(var i=0; i<myData.length;i++){
-                    myData[i].match = 'null';
-                    if(myData[i].name.match(res[0])){
-                        for(var j=0; j<myData[i].sensors.length;j++){
-                            myData[i].sensors[j].submatch = 'null';
-                            if(myData[i].sensors[j].name.toLowerCase().match(res[1].toLowerCase()) && myData[i].sensors[j].position == 'null'){
-                                myData[i].match = 'matched';
-                                myData[i].sensors[j].submatch = 'matched';
-                            }
-                        }
-                    }
-                }
-            }else{
-                for(var i=0; i<myData.length;i++){
-                    _this.myData[i].match = 'null';
-                    for(var j=0; j<myData[i].sensors.length;j++){
-                        myData[i].sensors[j].submatch = 'null';
-                        if(myData[i].sensors[j].name.toLowerCase().match(res[0].toLowerCase()) && myData[i].sensors[j].position == 'null'){
-                            if(myData[i].name.match(res[1])){
-                                myData[i].match = 'matched';
-                                myData[i].sensors[j].submatch = 'matched';
-                            }
-                        }
-                     }
-                }
-            }
-          }else{
-          
-              if(_this.enteredValue.length > 2){
-                  if(isNumeric(_this.enteredValue) == true){
-                        for(var i=0; i<myData.length;i++){
-                            myData[i].match = 'null';
-                            if(myData[i].name.match( _this.enteredValue)){
-                              //console.log(this.myData[i]);
-                              myData[i].match = 'matched';
-                          }
-
-                            for(var j=0; j<myData[i].sensors.length;j++){
-                                if(myData[i].sensors[j].position == 'null'){
-                                myData[i].sensors[j].submatch = 'matched';
-                                }
-                            }
-                        }
-                  }else{
-                        for(var i=0; i<myData.length;i++){
-                              myData[i].match = 'null';
-                            for(var j=0; j<myData[i].sensors.length;j++){
-                                    myData[i].sensors[j].submatch = 'null';
-                                //var temp = _this.myData[i].sensors[j].name.toLowerCase();
-                                if(myData[i].sensors[j].name.toLowerCase().match(res[0].toLowerCase()) && myData[i].sensors[j].position == 'null'){
-                                    myData[i].sensors[j].submatch = 'matched';
-                                    myData[i].match = 'matched';
-                                }
-                            }
-                            //console.log(this.myData[i]);
-                        }
-                  }
-               }else{
-                   for(var i=0; i<myData.length;i++){
-                            myData[i].match = 'null';
-                            for(var j=0; j<myData[i].sensors.length;j++){
-                                myData[i].sensors[j].submatch = 'null';
-                            }
-                        }
-                //console.log(err.message);
-               }
-          
-          }
+      this.findValue = function() {
+          _this.myData = myData;
+    var blas = _this.enteredValue;
+    var res = blas.split("/");
+    if(isNumeric(res[0])){
     
-}catch(err) {
-//console.log(err.message);
-}
-      }
-      
+        var searchStringContainDeviceName = false;
+          _this.myData.forEach(function(device) {
+              if(_this.enteredValue == ''){
+                  device.match = null;
+                    device.sensors.forEach(function(sensor) {
+                                sensor.submatch = null;
+                    });
+              }else{
+                  device.match = null;
+                  _this.enteredValue.split("/").forEach(function(word) {
+                      var rex = new RegExp(word,"i");
+                      if(rex.test(device.name)) {
+                        device.match = "matched";
+                          searchStringContainDeviceName = true;
+                          device.sensors.forEach(function(sensor) {
+                                sensor.submatch =  null;
+                                if (searchStringContainDeviceName) { 
+                                    _this.enteredValue.split("/").forEach(function(word) {
+                                      var rex = new RegExp(word,"i");
+                                      if(rex.test(sensor.name) && sensor.position == null) {
+                                        sensor.submatch = "matched";
+                                      }
+                                    });
+                                }
+                          });
+                      }
+                                                 
+                    });
+              }
+              
+          });
+          
+    }else{
+        
+        var searchStringContainDeviceName = false;
+      _this.myData.forEach(function(device) {
+          var searchStringContainsensorName = false;
+        device.match = null; // Clear seach result in every key up
+        _this.enteredValue.split("/").forEach(function(word) {
+            console.log(word);
+          var rex = new RegExp(word,"i");
+          if(rex.test(device.name)) {
+            device.match = "matched";
+            searchStringContainDeviceName = true;
+          }
+        });
+
+        device.sensors.forEach(function(sensor) {
+          if(typeof sensor.submatch == "undefined" || sensor.submatch == null || sensor.submatch == "matched") { //Seach only not left or right
+            sensor.submatch = null; // Clear seach result in every key up
+            if (searchStringContainDeviceName) {
+              if(device.match == "matched") {
+                _this.enteredValue.split("/").forEach(function(word) {
+                  var rex = new RegExp(word,"i");
+                  if(rex.test(sensor.name)) {
+                    sensor.submatch = "matched";
+                  } 
+                });
+              }
+            } else {
+              _this.enteredValue.split("/").forEach(function(word) {
+                var rex = new RegExp(word,"i");
+                if(rex.test(sensor.name)) {
+                  sensor.submatch = "matched";
+                    searchStringContainsensorName = true;
+                } 
+              });
+            }
+          }
+        });
+          
+          if (searchStringContainsensorName) {
+            device.match = "matched";
+          }
+      });
+        
+    }
+    };
       
       
       _this.move = function(index1, index2, position){
@@ -127,7 +143,7 @@ try {
           _this.myData = myData;
         console.log(_this.myData);
           _this.enteredValue = "";
-          _this.findValue(null);
+          _this.findValue();
      }
       
     _this.load = function(){
@@ -137,8 +153,9 @@ try {
     }
     
      _this.deleteData = function(index1, index2){
-         _this.findValue(null);
-        myData[index1].sensors[index2].position = 'null';
+         _this.enteredValue = "";
+         _this.findValue();
+        myData[index1].sensors[index2].position = null;
         _this.myData = myData;
          
      }
