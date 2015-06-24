@@ -69,7 +69,7 @@ angular.module('componentController')
                   device.match = null;
                   _this.enteredValue.split("/").forEach(function(word) {
                       var rex = new RegExp(word,"i");
-                      if(rex.test(device.name)) {
+                      if(rex.test(device.name) && word != '') {
                         device.match = "matched";
                           searchStringContainDeviceName = true;
                           device.sensors.forEach(function(sensor) {
