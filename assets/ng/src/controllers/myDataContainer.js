@@ -112,7 +112,7 @@ angular.module('componentController')
               if(device.match == "matched") {
                 _this.enteredValue.split("/").forEach(function(word) {
                   var rex = new RegExp(word,"i");
-                  if(rex.test(sensor.name)) {
+                  if(rex.test(sensor.name) && sensor.position == null) {
                     sensor.submatch = "matched";
                   } 
                 });
@@ -120,7 +120,7 @@ angular.module('componentController')
             } else {
               _this.enteredValue.split("/").forEach(function(word) {
                 var rex = new RegExp(word,"i");
-                if(rex.test(sensor.name)) {
+                if(rex.test(sensor.name) && sensor.position == null) {
                   sensor.submatch = "matched";
                     searchStringContainsensorName = true;
                 } 
